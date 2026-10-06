@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useFetcher } from "react-router";
+import { useFetcher, useLoaderData } from "react-router";
 import { useAppBridge } from "@shopify/app-bridge-react";
 import { boundary } from "@shopify/shopify-app-react-router/server";
 import { authenticate } from "../shopify.server";
@@ -102,23 +102,33 @@ export const action = async ({ request }) => {
 
 export default function PayPalGateway() {
   const fetcher = useFetcher();
+  const loaderData = useLoaderData();
   const shopify = useAppBridge();
 
-  const [paypalEmail, setPaypalEmail] = useState("");
-  const [currency, setCurrency] = useState("USD");
-  const [enabled, setEnabled] = useState(true);
-  const [buttonText, setButtonText] = useState("Pay with PayPal");
+  const [paypalEmail, setPaypalEmail] = useState(
+    loaderData?.settings?.paypalEmail || ""
+  );
+  const [currency, setCurrency] = useState(
+    loaderData?.settings?.currency || "USD"
+  );
+  const [enabled, setEnabled] = useState(
+    loaderData?.settings?.enabled ?? true
+  );
+  const [buttonText, setButtonText] = useState(
+    loaderData?.settings?.buttonText || "Pay with PayPal"
+  );
 
   const data = fetcher.data;
+  const settings = data?.settings ?? loaderData?.settings;
 
   useEffect(() => {
-    if (data?.settings) {
-      setPaypalEmail(data.settings.paypalEmail || "");
-      setCurrency(data.settings.currency || "USD");
-      setEnabled(data.settings.enabled ?? true);
-      setButtonText(data.settings.buttonText || "Pay with PayPal");
+    if (settings) {
+      setPaypalEmail(settings.paypalEmail || "");
+      setCurrency(settings.currency || "USD");
+      setEnabled(settings.enabled ?? true);
+      setButtonText(settings.buttonText || "Pay with PayPal");
     }
-  }, [data]);
+  }, [settings]);
 
   useEffect(() => {
     if (data?.success) {
