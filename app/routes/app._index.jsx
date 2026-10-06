@@ -14,6 +14,11 @@ export const loader = async ({ request }) => {
     },
   });
 
+  console.log("[PAYPAL DEBUG] Loaded settings:", {
+    shop: session.shop,
+    settings,
+  });
+
   return {
     settings: settings || {
       paypalEmail: "",
@@ -61,6 +66,14 @@ export const action = async ({ request }) => {
   }
 
   const finalButtonText = buttonText || "Pay with PayPal";
+
+  console.log("[PAYPAL DEBUG] Saving settings:", {
+    shop: session.shop,
+    paypalEmail,
+    currency,
+    enabled,
+    buttonText,
+  });
 
   const settings = await prisma.payPalSettings.upsert({
     where: {
