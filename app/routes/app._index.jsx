@@ -20,7 +20,9 @@ export const loader = async ({ request }) => {
   });
 
   return {
-    settings: settings || {
+  shop: session.shop,
+  settings: settings || {
+
       paypalEmail: "",
       currency: "USD",
       enabled: true,
@@ -103,6 +105,7 @@ export const action = async ({ request }) => {
 export default function PayPalGateway() {
   const fetcher = useFetcher();
   const loaderData = useLoaderData();
+  const shop = loaderData?.shop || "";
   const shopify = useAppBridge();
 
   const [paypalEmail, setPaypalEmail] = useState(
@@ -210,7 +213,7 @@ export default function PayPalGateway() {
           </s-text>
 
           <s-button
-            href="/admin/settings/payments"
+            href={"https://" + "admin.shopify.com/store/" + shop.replace(".myshopify.com", "") + "/settings/payments"}
             target="_blank"
           >
             Open Shopify Payments
