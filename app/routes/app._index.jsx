@@ -202,7 +202,23 @@ export default function PayPalGateway() {
         </s-stack>
       </s-section>
 
-      <s-section heading="Current Configuration">
+      <s-section heading="Shopify PayPal Setup">
+        <s-stack direction="block" gap="base">
+          <s-text>
+            Your PayPal email is saved in this app. To accept PayPal payments,
+            activate PayPal in your Shopify payment settings.
+          </s-text>
+
+          <s-button
+            href="/admin/settings/payments"
+            target="_blank"
+          >
+            Open Shopify Payments
+          </s-button>
+        </s-stack>
+      </s-section>
+     
+ <s-section heading="Current Configuration">
         <s-stack direction="block" gap="base">
           <s-text>
             PayPal Email: {paypalEmail || "Not configured"}
